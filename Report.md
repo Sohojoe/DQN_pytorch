@@ -1,4 +1,6 @@
 [RLLoop]: images/ReinforcementLearningLoop.png "Reinforcement Learning Definition"
+[Gt]: images/(3.7)_Gt.png "Goal as sum of future rewards"
+[Gt_discounted]: images/(3.8)_Gt_discount_reward.png "Goal as sum of future rewards discounted by gamma"
 [Qpi]: images/(3.13)_Action-Value_Function_Qpi.png "Reinforcement Learning Definition"
 [qpi(s,a)]: images/qpi(s,a).png "Q pie for state, S, and action, A"
 [St]: images/qpi(s,a).png "State S, at timestep t."
@@ -16,7 +18,9 @@ The goal of this project is to solve the "Banana" environment using a Deep Q Net
 
 ## Reinforcement Learning and the Q function
 
-Reinforcement learning is used to address problems of sequencial decision making whereby an agent's action at one timestep influence future situations, or states. For example, each move is chess influences the future state of the chessboard. The agents goal in reinforcement learning is to maximize its future reward, for example, +1, -1, or 0 for a win, lose, or draw in chess.
+Reinforcement learning is used to address problems of sequencial decision making whereby an agent's action at one timestep influence future situations, or states. For example, each move in chess influences the future state of the chessboard. 
+
+The agents goal in reinforcement learning is to maximize its future reward. For example, +1, -1, or 0 for a win, lose, or draw in chess.
 
 ### Markov Decision Process
 
@@ -30,7 +34,7 @@ Reinforcement learning uses a classical formulation of sequencial desicion makin
 
  - The agent then performs an action, A t, on the environment. 
 
- - This in term produces a new environment state at the next timestep, S t+1, along with a reward signal, R t+1.
+ - This in turm produces a new environment state at the next timestep, S t+1, along with a reward signal, R t+1.
 
 The variables, S t, A t, S t+1, R t+1, make the core inputs into any reinforcment learning algorthem.
 
@@ -40,28 +44,37 @@ The goal of the agent is to maximize the sum of all future rewards. That is, we 
 
 The sum of all future reward, G, at timestep, t, is denoted as G t.
 
-G t, is equivilant to, 
+!["(G at timestep t, is equivilant to, R, at t+1, +, R, at t+2, + R, at t+3, +, etc)"][Gt]
+
+(G at timestep t, is equivilant to, R, at t+1, +, R, at t+2, + R, at t+3, +, etc)
 
 
 ### Maximizing Discounted Future Rewards
 
-Because future rewards have 
+In pratice we want to reduce the impact of rewards further in the future. This is done by introducing a discount rate, γ (gamma), where each step in the future is multiple by a incremental power of γ. Therefore:
 
+!["(G at timestep t, is equivilant to, R, at t+1, +, (gamma, times R, at t+2), +, (gamma squared, times, R, at t+3), +, etc)"][Gt_discounted]
 
-### The Markov Property
+(G at timestep t, is equivilant to, R, at t+1, +, (gamma, times R, at t+2), +, (gamma squared, times, R, at t+3), +, etc)
 
-The state is said the have the Markov Property if the state includes all information about all aspects of the past agent–environment interaction that make a difference for the future. For example, in chess, at any timestep the chessboard reveals the full state of the game, where as in Poker, some cards are hidden. Therefore, chess has the Markov Property, whereas, Poker does not.
+### The State-Value Function
 
-state has the Markov Property because it represents all the history of that game in terms of influencing future moves.
+Now we can imagine that, over time, an agent can learn to predict the future value of each state of the MDP. This can be achived by making an estimate of the value at a given state, then calculating the actual value of that state at the end of the episode to produce a loss that we can apply to the estimate using gradient decent. We call this the State-Value function. 
 
+The State-Value function is a powerful tool, because by learning the value of each state in the MDP, the agent does not have to do a nested tree search. At a given timestep, the agent can simply lookup the value of each state that each avaliable action would result in and select the action that results in the highest state-value.
 
- (MDP) is defined by:
- a set of states, S
- a set of actions, A
- a set of rewards, R
- one-step dynamics of the environment
- a discount factor of future rewards.
+The State-Value function is denoted as:
 
+### The Action-Value Function
+
+There is one problem with the State-Value Function approach: the agent needs access to the dynamics of the MDP in order to calculate the next state produced by each action. For games like Chess or Go, this is trivral. However, for many real world situations, we do not have access to the dynamics.
+
+What if, rather than learn the value of each state, the agent learns the value of every action at each state. Now the agent can simply choose the action with the highest value. This is called the Action-Value Function and is denoted as:
+
+![Qpi]
+Q pie
+
+Learning the Action-Value Function, or Q learning form the bases for a family of algorthems in Reinforcement Learning. This is the foundation for the DQN algorthem.
 
 
 Policy - ref (pi) Policy definition
@@ -189,3 +202,19 @@ Optional Goals
 * [ ] Write a blog post explaining the project and your implementation!
 * [ ] Implement a double DQN, a dueling DQN, and/or prioritized experience replay!
 * [ ] For an extra challenge after passing this project, try to train an agent from raw pixels! Check out (Optional) Challenge: Learning from Pixels in the classroom for more details.
+
+
+### The Markov Property
+
+The state is said the have the Markov Property if the state includes all information about all aspects of the past agent–environment interaction that make a difference for the future. For example, in chess, at any timestep the chessboard reveals the full state of the game, where as in Poker, some cards are hidden. Therefore, chess has the Markov Property, whereas, Poker does not.
+
+state has the Markov Property because it represents all the history of that game in terms of influencing future moves.
+
+
+ (MDP) is defined by:
+ a set of states, S
+ a set of actions, A
+ a set of rewards, R
+ one-step dynamics of the environment
+ a discount factor of future rewards.
+
