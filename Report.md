@@ -1,3 +1,9 @@
+[RLLoop]: images/ReinforcementLearningLoop.png "Reinforcement Learning Definition"
+[Qpi]: images/(3.13)_Action-Value_Function_Qpi.png "Reinforcement Learning Definition"
+[qpi(s,a)]: images/qpi(s,a).png "Q pie for state, S, and action, A"
+[St]: images/qpi(s,a).png "State S, at timestep t."
+[At]: images/qpi(s,a).png "Action A, at timestep t."
+
 [DataTable3]: images/DataTable3.png "The effects of replay and separating the target Q-network"
 
 # Udacity Reinforcement Learning Nanodagree - Project One
@@ -8,19 +14,44 @@ Feb 15th, 2019
 The goal of this project is to solve the "Banana" environment using a Deep Q Network (DQN) [CITE], a reinforcement learning algorthem, using PyTorch and Python 3.
 
 
-## The Banana Environment
-The Banana environemnt is a modified version of the ML-Agents [Banana Collector](https://github.com/Unity-Technologies/ml-agents/blob/0.4.0/docs/Learning-Environment-Examples.md#banana-collector) environment.
+## Reinforcement Learning and the Q function
 
-The environment has 37 scaler observations which contain the agent's velocity along with ray-based perception of objects around the agent's forward direction.
+Reinforcement learning is used to address problems of sequencial decision making whereby an agent's action at one timestep influence future situations, or states. For example, each move is chess influences the future state of the chessboard. The agents goal in reinforcement learning is to maximize its future reward, for example, +1, -1, or 0 for a win, lose, or draw in chess.
 
-The environment provides the agent with a +1 reward for colleting yellow bananas and -1 when collecting a blue banana.
+Reinforcement learning uses a classical formulation of sequencial desicion making called a Markov Decision Process, or MDP. 
 
-The envionment provides four descrete actions
+![alt text][RLLoop]
 
- * 0 - Move Forward
- * 1 - Move Backwards
- * 2 - Move Left
- * 3 - Move Right
+An MDP has descrete timesteps, denoted as a lowercase "t". 
+
+The action-value function is denoted as ![Q pie. for state, S, and action, A][St] 
+
+The agent observs the environments state, S, at the current timestep, t, giving us, S t. 
+
+The agent then performs an action, A t, on the environment. 
+
+This in term produces a new environment state at the next timestep, S t+1, along with a reward signal, R t+1.
+
+These five variables are the core inputs into any reinforcment learning algorthem.
+
+
+
+ (MDP) is defined by:
+ a set of states, S
+ a set of actions, A
+ a set of rewards, R
+ one-step dynamics of the environment
+ a discount factor of future rewards.
+
+
+
+Policy - ref (pi) Policy definition
+
+
+
+
+Q-learning: Off-policy TD Control
+One of the early breakthroughs in reinforcement learning was the development of an off-policy TD control algorithm known as Q-learning (Watkins, 1989), defined by
 
 
 ## The DQN Algorithm
@@ -95,7 +126,24 @@ The ```target_Q``` values are calculated using the formula ```rewards + (gamma *
  * ```TAU``` is amount to move the target network towards the local network.
 
 
+## The Banana Environment
+The Banana environemnt is a modified version of the ML-Agents [Banana Collector](https://github.com/Unity-Technologies/ml-agents/blob/0.4.0/docs/Learning-Environment-Examples.md#banana-collector) environment.
+
+The environment has 37 scaler observations which contain the agent's velocity along with ray-based perception of objects around the agent's forward direction.
+
+The environment provides the agent with a +1 reward for colleting yellow bananas and -1 when collecting a blue banana.
+
+The envionment provides four descrete actions
+
+ * 0 - Move Forward
+ * 1 - Move Backwards
+ * 2 - Move Left
+ * 3 - Move Right
+
+
 ## Model Architecture 
+
+
 
 
 ## Hyperparameters
