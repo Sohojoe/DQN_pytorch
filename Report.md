@@ -1,10 +1,15 @@
 [RLLoop]: images/ReinforcementLearningLoop.png "Reinforcement Learning Definition"
 [Gt]: images/(3.7)_Gt.png "Goal as sum of future rewards"
 [Gt_discounted]: images/(3.8)_Gt_discount_reward.png "Goal as sum of future rewards discounted by gamma"
-[Qpi]: images/(3.13)_Action-Value_Function_Qpi.png "Reinforcement Learning Definition"
-[qpi(s,a)]: images/qpi(s,a).png "Q pie for state, S, and action, A"
+[vpiFormal]: images/(3.12)_State-Value_Function_Vpi.png "State-Value Function"
+[qpiFormal]: images/(3.13)_Action-Value_Function_Qpi.png "Action-Value Function"
+[vpi]: images/vpi.png "State-Value Function"
+[qpi]: images/qpi.png "Action-Value Function"
+[vpi(s)]: images/qpi(s,a).png "Value for policy pie, given state, S"
+[qpi(s,a)]: images/qpi(s,a).png "Q value for policy pie, given the state action pair, S, and, A"
 [St]: images/qpi(s,a).png "State S, at timestep t."
 [At]: images/qpi(s,a).png "Action A, at timestep t."
+[q-learningFormal]: images/(6.8)q-learningFormal.png
 
 [DataTable3]: images/DataTable3.png "The effects of replay and separating the target Q-network"
 
@@ -63,33 +68,39 @@ Now we can imagine that, over time, an agent can learn to predict the future val
 
 The State-Value function is a powerful tool, because by learning the value of each state in the MDP, the agent does not have to do a nested tree search. At a given timestep, the agent can simply lookup the value of each state that each avaliable action would result in and select the action that results in the highest state-value.
 
-The State-Value function is denoted as:
+The State-Value function is denoted as: ![vpi]
+
+The formal definition for the State-Value Function is:
+
+![vpiFormal]
+
+(The Value for policy pie, given state, S, is equivilant to, the expected discounted return, if the agents starts at state, s, and then uses policy, pi, to choose actions for all future time steps)
 
 ### The Action-Value Function
 
 There is one problem with the State-Value Function approach: the agent needs access to the dynamics of the MDP in order to calculate the next state produced by each action. For games like Chess or Go, this is trivral. However, for many real world situations, we do not have access to the dynamics.
 
-What if, rather than learn the value of each state, the agent learns the value of every action at each state. Now the agent can simply choose the action with the highest value. This is called the Action-Value Function and is denoted as:
+What if, rather than learn the value of each state, the agent learns the value of every action at each state. Now the agent can simply choose the action with the highest value. This is called the Action-Value Function and is denoted as: ![qpi]
 
-![Qpi]
-Q pie
+The formal definition for the Action-Value Function is
 
-Learning the Action-Value Function, or Q learning form the bases for a family of algorthems in Reinforcement Learning. This is the foundation for the DQN algorthem.
+![qpiFormal]
 
+(The q value for policy pie, given the state action pair, S, and, A, is equivilant to, the expected discounted return, if the agents starts at state, s, chooses action, a, and then uses policy, pi, to choose actions for all future time steps)
 
-Policy - ref (pi) Policy definition
+The Q-learning algorthem, (Watkins, 1989), was one of the early breakthroughs in reinforcement learning. Q-learning forms the bases for a family of algorthems in Reinforcement Learning and is the foundation for the DQN (Deep Q Network) algorthem.
 
+Formally, the Q-learning algorthem is defined as:
 
+![q-learningFormal]
 
-
-Q-learning: Off-policy TD Control
-One of the early breakthroughs in reinforcement learning was the development of an off-policy TD control algorithm known as Q-learning (Watkins, 1989), defined by
+(Let the Q value for the state-action pair, S and, A, at timestep t, be its current value, plus, the step size, alpha, multiplied by, the reward, R, at timestep, t+1, plus, gamma, multipled by, the maximum state-value, Q, of all actions, for the state, s, at timestep, t+1, minus, the state-value, Q, for the state-action pair, S and A, at timestep ,t)
 
 
 ## The DQN Algorithm
-The alogrothem used is based on the DQN Algorthem [CITE] which was successful in using a neural network as a nonlinear function approximator to represent the action value function to master the domain of Atari 2600 video games. 
+The DQN, (Deep Q Network), Algorthem [CITE] was successful in using a neural network as a nonlinear function approximator to represent the action value function to master the domain of Atari 2600 video games. 
 
-As well as using a neural network, the DQN algorthem introduces two ideas that address the tendancy of nonlinear function aspproximotors to become unstable or diverge:
+As well as using a neural network, the DQN algorthem introduces two ideas that address the tendancy of nonlinear function approximotors to become unstable or diverge:
 
 1) Experiance Replay: Observations are added to an experiance replay buffer which are then randomly sampled during the learning phase. The authors state that this removes correlations in the observation sequence and also smoothes over changes in the data distribution. This authors note that this idea is inspired by biology.
 
@@ -100,7 +111,7 @@ The authors demonstrate the impact of these two ideas on a subset of the Atari 2
 
 ![alt text][DataTable3]
 
-### My Implementation of the DQN Algorithm
+### Implementation of the DQN Algorithm
 
 The implementation of the DQN algorthem I used has a few changes from the DQN Atari paper:
 
@@ -109,17 +120,6 @@ The implementation of the DQN algorthem I used has a few changes from the DQN At
 * Neural Network design: The observation space I use here is much simpler than the pixel inputs used in the atari paper, therefor I use a simpler neuro network which enabled faster training.
 
 * Hyperparamaters: Again, because of the simpler nature of the Banana environment, I use different hyperparamaters to enable faster training. See below for the detail of what hyperparamaters I used.
-
-### Code Organization
-
-The code is organized into the following files
-
-* ```dqn_agent.py```: The implementation of the DQN algorthem including the hyperparamaters
-* ```model.py```: The model used for the neuralnetwork
-* ```learn.py```: The python script used to learn the environment and save the trained model.
-* ```play.py```: The python script used to learn the environment and save the trained model.
-
-
 
 ### Learning Phases
 
@@ -158,6 +158,26 @@ The ```target_Q``` values are calculated using the formula ```rewards + (gamma *
  * ```TAU``` is amount to move the target network towards the local network.
 
 
+### Code Organization
+
+The code is organized into the following files
+
+* ```dqn_agent.py```: The implementation of the DQN algorthem including the hyperparamaters
+* ```model.py```: The model used for the neuralnetwork
+* ```learn.py```: The python script used to learn the environment and save the trained model.
+* ```play.py```: The python script used to learn the environment and save the trained model.
+
+### Model Architecture 
+
+
+
+
+### Hyperparameters
+
+
+
+
+
 ## The Banana Environment
 The Banana environemnt is a modified version of the ML-Agents [Banana Collector](https://github.com/Unity-Technologies/ml-agents/blob/0.4.0/docs/Learning-Environment-Examples.md#banana-collector) environment.
 
@@ -171,16 +191,6 @@ The envionment provides four descrete actions
  * 1 - Move Backwards
  * 2 - Move Left
  * 3 - Move Right
-
-
-## Model Architecture 
-
-
-
-
-## Hyperparameters
-
-
 
 
 
