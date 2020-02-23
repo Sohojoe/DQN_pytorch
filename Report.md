@@ -18,22 +18,41 @@ The goal of this project is to solve the "Banana" environment using a Deep Q Net
 
 Reinforcement learning is used to address problems of sequencial decision making whereby an agent's action at one timestep influence future situations, or states. For example, each move is chess influences the future state of the chessboard. The agents goal in reinforcement learning is to maximize its future reward, for example, +1, -1, or 0 for a win, lose, or draw in chess.
 
+### Markov Decision Process
+
 Reinforcement learning uses a classical formulation of sequencial desicion making called a Markov Decision Process, or MDP. 
 
 ![alt text][RLLoop]
 
-An MDP has descrete timesteps, denoted as a lowercase "t". 
+ - An MDP has descrete timesteps, denoted as a lowercase "t". 
 
-The action-value function is denoted as ![Q pie. for state, S, and action, A][St] 
+ - The agent observs the environments state, S, at the current timestep, t, giving us, S t. 
 
-The agent observs the environments state, S, at the current timestep, t, giving us, S t. 
+ - The agent then performs an action, A t, on the environment. 
 
-The agent then performs an action, A t, on the environment. 
+ - This in term produces a new environment state at the next timestep, S t+1, along with a reward signal, R t+1.
 
-This in term produces a new environment state at the next timestep, S t+1, along with a reward signal, R t+1.
+The variables, S t, A t, S t+1, R t+1, make the core inputs into any reinforcment learning algorthem.
 
-These five variables are the core inputs into any reinforcment learning algorthem.
+### Maximizing Future Rewards
 
+The goal of the agent is to maximize the sum of all future rewards. That is, we may want the agent to learn to incur a small negative reward now if that increases the chance of greater reward in the future. 
+
+The sum of all future reward, G, at timestep, t, is denoted as G t.
+
+G t, is equivilant to, 
+
+
+### Maximizing Discounted Future Rewards
+
+Because future rewards have 
+
+
+### The Markov Property
+
+The state is said the have the Markov Property if the state includes all information about all aspects of the past agent–environment interaction that make a difference for the future. For example, in chess, at any timestep the chessboard reveals the full state of the game, where as in Poker, some cards are hidden. Therefore, chess has the Markov Property, whereas, Poker does not.
+
+state has the Markov Property because it represents all the history of that game in terms of influencing future moves.
 
 
  (MDP) is defined by:
