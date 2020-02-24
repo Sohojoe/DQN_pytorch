@@ -10,12 +10,11 @@
 [St]: images/qpi(s,a).png "State S, at timestep t."
 [At]: images/qpi(s,a).png "Action A, at timestep t."
 [q-learningFormal]: images/(6.8)q-learningFormal.png
-
 [DataTable3]: images/DataTable3.png "The effects of replay and separating the target Q-network"
+[plot_of_rewards]: images/plot_of_rewards.png
 
 # Udacity Reinforcement Learning Nanodagree - Project One
-Joe Booth
-Feb 15th, 2019
+Joe Booth Febuary 2019
 
 ## Project Objective
 The goal of this project is to solve the "Banana" environment using a Deep Q Network (DQN) [CITE], a reinforcement learning algorthem, using PyTorch and Python 3.
@@ -68,7 +67,7 @@ Now we can imagine that, over time, an agent can learn to predict the future val
 
 The State-Value function is a powerful tool, because by learning the value of each state in the MDP, the agent does not have to do a nested tree search. At a given timestep, the agent can simply lookup the value of each state that each avaliable action would result in and select the action that results in the highest state-value.
 
-The State-Value function is denoted as: ![vpi]
+The State-Value function is denoted as: ![vpi] (lowecase v, subscript pi)
 
 The formal definition for the State-Value Function is:
 
@@ -80,7 +79,7 @@ The formal definition for the State-Value Function is:
 
 There is one problem with the State-Value Function approach: the agent needs access to the dynamics of the MDP in order to calculate the next state produced by each action. For games like Chess or Go, this is trivral. However, for many real world situations, we do not have access to the dynamics.
 
-What if, rather than learn the value of each state, the agent learns the value of every action at each state. Now the agent can simply choose the action with the highest value. This is called the Action-Value Function and is denoted as: ![qpi]
+What if, rather than learn the value of each state, the agent learns the value of every action at each state. Now the agent can simply choose the action with the highest value. This is called the Action-Value Function and is denoted as: ![qpi] (lowecase q, subscript pi)
 
 The formal definition for the Action-Value Function is
 
@@ -169,11 +168,21 @@ The code is organized into the following files
 
 ### Model Architecture 
 
-
+input layer   = num_input with relu activation
+hidden layer  = 32 with relu activation
+out put layer = action_size
 
 
 ### Hyperparameters
 
+```
+BUFFER_SIZE = int(1e5)  # replay buffer size
+BATCH_SIZE = 32         # minibatch size
+GAMMA = 0.99            # discount factor
+TAU = 0.00125           # for soft update of target parameters
+LR = 3e-3               # learning rate 
+UPDATE_EVERY = 4        # how often to update the network
+```
 
 
 
@@ -192,10 +201,8 @@ The envionment provides four descrete actions
  * 2 - Move Left
  * 3 - Move Right
 
-
-
 ## Results
-
+![plot_of_rewards]
 
 TODO
 
