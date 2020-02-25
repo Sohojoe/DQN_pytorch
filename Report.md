@@ -23,7 +23,7 @@ Note: This report aims to be accessible via text to speech browser plugins. To t
 
 This report covers the following areas:
 
-* An overview of Reinforcement Learning and the Q-learning algorthem. 
+* An overview of Reinforcement Learning and the Q-learning algorithm. 
 * The DQN Algorithm
 * The implementation of the DQN Algorithm, including model architecture and hyperparameters.
 * The Environment
@@ -66,7 +66,7 @@ The sum of all future reward, G, at time step, t, is denoted as G t.
 
 ### Maximizing Discounted Future Rewards
 
-In practice, we want to reduce the impact of rewards further in the future. We achieve this by introducing a discount rate, γ (gamma), where each step in the future is multiple by an incremental power of γ. Therefore:
+In practice, we want to reduce the impact of rewards further in the future. We achieve this by introducing a discount rate, γ (gamma), where each step in the future is multiplied by an incremental power of γ. Therefore:
 
 !["(G at timestep t, is equivalent to, R, at t+1, +, (gamma, times R, at t+2), +, (gamma squared, times, R, at t+3), +, etc.)"][Gt_discounted]
 
@@ -148,20 +148,20 @@ The action is passed to the environment's step function, which returns:
 * the reward value ```reward```
 * and a termination flag ```done```. 
 
-Finally, the algorithm uses an Experience Replay Buffer to store the ```state```, ```reward```, ```next_state```, and ```done``` flag.
+Finally, the algorithm uses an Experience Replay Buffer to store the ```state```, ```action```,```reward```, ```next_state```, and ```done``` flag.
 
 #### Learning Phase
-In the learning phase, the algorithm randomly samples the experience replay buffer to gather a set of experiences. It updates the neural network via backpropagation using the loos between the ```expected_Q``` values and the ```target_Q``` values.
+In the learning phase, the algorithm randomly samples the experience replay buffer to gather a set of experiences. It updates the neural network via backpropagation using the loss between the ```expected_Q``` values and the ```target_Q``` values.
 
-The ```expected_Q``` values are calculated using the **local** network, ```qnetwork_local```, with the given ```states``` and selected ```actions``` from the experience replay sample set.
+The ```expected_Q``` values are calculated using the **local network**, ```qnetwork_local```, with the given ```states``` and selected ```actions``` from the experience replay sample set.
 
 The ```target_Q``` values are calculated using the formula ```rewards + (gamma * max_predicted_Q * (1-dones))``` where
 
  * ```rewards``` and ```dones``` - are from the experiance replay sample set.
  * ```gamma``` - is the discount factor hyperparameter.
- * ```max_predicted_Q``` - is the maxium Q value of the ```next_state``` as estimated by the **target** network, ```qnetwork_target```.
+ * ```max_predicted_Q``` - is the maxium Q value of the ```next_state``` as estimated by the **target network**, ```qnetwork_target```.
 
-A the end of the learning phase, a *'soft update'* is used to move the target network closer to the local network using the following: ```qnetwork_target = tau*qnetwork_local + (1.0-TAU)*qnetwork_target``` where:
+A the end of the learning phase, a *'soft update'* is used to move the target network closer to the local network using the following: ```qnetwork_target = TAU * qnetwork_local + (1.0-TAU) * qnetwork_target``` where:
 
  * ```qnetwork_target``` is the target network
  * ```qnetwork_local``` is the local network
@@ -178,10 +178,13 @@ The code is organized into the following files
 * ```play.py```: The python script used to play back the trained model.
 
 ### Model Architecture 
+
+The model architecture uses three network layers, an input layer, a hidden layer, and an output layer. The layers have the following size and activation units.
+
 ```
-input layer = num_input with relu activation
+input layer = 37 (number of observations) with relu activation
 hidden layer = 32 with relu activation
-output layer = action_size
+output layer = 4 (number of actions)
 ```
 
 ### Hyperparameters
@@ -194,8 +197,6 @@ TAU = 0.00125           # for soft update of target parameters
 LR = 3e-3               # learning rate 
 UPDATE_EVERY = 4        # how often to update the network
 ```
-
-
 
 
 ## The Banana Environment
