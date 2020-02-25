@@ -17,7 +17,7 @@
 Joe Booth Febuary 2019
 
 ## Project Objective
-The goal of this project is to solve the "Banana" environment using a Deep Q Network (DQN) [CITE], a reinforcement learning algorithm, using PyTorch and Python 3.
+The goal of this project is to solve the "Banana" environment using a Deep Q Network (DQN) (Mnih et al, 2015), a reinforcement learning algorithm, using PyTorch and Python 3.
 
 Note: This report aims to be accessible via text to speech browser plugins. To that end, I have phonetically typed out the 'alt-text' tag under equations (typically in brackets). I also use spaces between letters so that the text to speech plugin correctly pronounces the phrase. For example, I denote state at timestep t, as, 's t', as opposed to, 'st'
 
@@ -108,7 +108,7 @@ Formally, the Q-learning algorithm is defined as:
 
 
 ## The DQN Algorithm
-The DQN (Deep Q Network), algorithm [CITE] was successful in using a neural network as a nonlinear function approximator to represent the action-value function to master the domain of Atari 2600 video games.
+The DQN (Deep Q Network), algorithm (Mnih et al, 2015) was successful in using a neural network as a nonlinear function approximator to represent the action-value function to master the domain of Atari 2600 video games.
 
 As well as using a neural network, the DQN algorithm introduces two ideas that address the tendency of nonlinear function approximators to become unstable or diverge:
 
