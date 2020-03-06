@@ -4,9 +4,17 @@ from collections import deque
 import matplotlib.pyplot as plt
 import torch
 import random
+from sys import platform
 
-# env = UnityEnvironment(file_name="Banana.app")
-env = UnityEnvironment(file_name="Banana_Windows_x86_64/Banana.exe",no_graphics=True)
+if platform == "linux" or platform == "linux2":
+    # linux
+    env = UnityEnvironment(file_name="Banana.app")
+elif platform == "darwin":
+    # OS X
+    env = UnityEnvironment(file_name="Banana.app")
+else: # elif platform == "win32":
+    # Windows...
+    env = UnityEnvironment(file_name="Banana_Windows_x86_64/Banana.exe",no_graphics=True)
 
 # get the default brain
 brain_name = env.brain_names[0]
@@ -95,15 +103,18 @@ def dqn(n_episodes=1000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
             high_score = np.mean(high_scores_window)
             torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
     print('\rHigh Score: {:.2f}'.format(high_score))
-    return scores
+    return scores, window_average
 
-scores = dqn()
+scores, window_average = dqn()
 env.close()
 
+buff_13 = [13 for i in range(len(scores))]
 # plot the scores
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(np.arange(len(scores)), scores)
+plt.plot(np.arange(len(buff_13)), buff_13)
+plt.plot(np.arange(len(window_average)), window_average)
 plt.ylabel('Score')
 plt.xlabel('Episode #')
 plt.show()

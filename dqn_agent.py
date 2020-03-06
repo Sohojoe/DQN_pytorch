@@ -10,12 +10,12 @@ import torch.optim as optim
 from torch.autograd import Variable
 
 BUFFER_SIZE = int(1e5)  # replay buffer size
-BATCH_SIZE = 32         # minibatch size
+BATCH_SIZE = 64         # minibatch size
 GAMMA = 0.99            # discount factor
 TAU = 0.00125            # for soft update of target parameters
 LR = 3e-3               # learning rate 
 UPDATE_EVERY = 4        # how often to update the network
-USE_DDQN = True         # use DDQN over DQN
+USE_DDQN = False         # use DDQN over DQN
 USE_SPER = False        # use simple prioirtized experiance replay
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

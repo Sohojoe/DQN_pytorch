@@ -218,9 +218,9 @@ The environment provides four discrete actions:
 
 TODO
 
-* [ ] Clearly describe the learning algorithm 
-* [ ] chosen hyperparameters
-* [ ] describes the model architectures for any neural networks.
+* [x] Clearly describe the learning algorithm 
+* [x] chosen hyperparameters
+* [x] describes the model architectures for any neural networks.
 * [ ] plot of rewards per episode - illustrate that the agent is able to receive an average reward (over 100 episodes) of at least +13
 * [ ] reports the number of episodes needed to solve the environment
 * [ ] Ideas for Future Work - concrete future ideas for improving the agent's performance.
