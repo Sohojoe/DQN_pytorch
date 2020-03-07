@@ -5,8 +5,19 @@ import matplotlib.pyplot as plt
 import torch
 import random
 from dqn_agent import Agent
+from sys import platform
 
-env = UnityEnvironment(file_name="Banana.app")
+if platform == "linux" or platform == "linux2":
+    # linux
+    env = UnityEnvironment(file_name="Banana.app")
+elif platform == "darwin":
+    # OS X
+    env = UnityEnvironment(file_name="Banana.app")
+else: # elif platform == "win32":
+    # Windows...
+    # env = UnityEnvironment(file_name="Banana_Windows_x86_64/Banana.exe",no_graphics=True)
+    env = UnityEnvironment(file_name="Banana_Windows_x86_64/Banana.exe")
+
 
 brain_name = env.brain_names[0]
 brain = env.brains[brain_name]
@@ -33,6 +44,7 @@ for i in range(5):
     for j in range(200):
         action = agent.act(state)
         # env.render()
+        action = action.astype(int)
         env_info = env.step(action)[brain_name]        # send the action to the environment
         next_state = env_info.vector_observations[0]   # get the next state
         reward = env_info.rewards[0]                   # get the reward

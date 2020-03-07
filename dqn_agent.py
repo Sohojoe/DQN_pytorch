@@ -12,9 +12,9 @@ from torch.autograd import Variable
 BUFFER_SIZE = int(1e5)  # replay buffer size
 BATCH_SIZE = 64         # minibatch size
 GAMMA = 0.99            # discount factor
-TAU = 0.00125            # for soft update of target parameters
-LR = 3e-3               # learning rate 
-UPDATE_EVERY = 4        # how often to update the network
+TAU = 1e-3              # for soft update of target parameters
+LR = 5e-4               # learning rate 
+UPDATE_EVERY = 4        # how often to update the networks
 USE_DDQN = False         # use DDQN over DQN
 USE_SPER = False        # use simple prioirtized experiance replay
 
