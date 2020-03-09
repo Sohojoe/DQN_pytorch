@@ -74,14 +74,12 @@ def dqn(n_episodes=1000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
         state = env_info.vector_observations[0]
         score = 0
         for t in range(max_t):
-            # action = np.random.randint(action_size)        # select random action
             action = agent.act(state, eps)                 # select an action
             action = action.astype(int)
             env_info = env.step(action)[brain_name]        # send the action to the environment
             next_state = env_info.vector_observations[0]   # get the next state
             reward = env_info.rewards[0]                   # get the reward
             done = env_info.local_done[0]                  # see if episode has finished
-            # next_state, reward, done, _ = env.step(action)
             agent.step(state, action, reward, next_state, done)
             state = next_state
             score += reward

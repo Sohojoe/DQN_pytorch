@@ -12,12 +12,14 @@
 [q-learningFormal]: images/(6.8)q-learningFormal.png
 [DataTable3]: images/DataTable3.png "The effects of replay and separating the target Q-network"
 [plot_of_rewards]: images/plot_of_rewards.png
+[banana_good]: images/banana_good.gif
+[banana_stuck]: images/banana_stuck.gif
 
 # Udacity Reinforcement Learning Nanodagree - Project One
 Joe Booth Febuary 2019
 
 ## Project Objective
-The goal of this project is to solve the "Banana" environment using a Deep Q Network (DQN) (Mnih et al, 2015), a reinforcement learning algorithm, using PyTorch and Python 3.
+The goal of this project is to solve the "Banana" environment using a Deep Q Network (DQN) (Mnih et al., 2015), a reinforcement learning algorithm, using PyTorch and Python 3.
 
 Note: This report aims to be accessible via text to speech browser plugins. To that end, I have phonetically typed out the 'alt-text' tag under equations (typically in brackets). I also use spaces between letters so that the text to speech plugin correctly pronounces the phrase. For example, I denote state at timestep t, as, 's t', as opposed to, 'st'
 
@@ -108,7 +110,7 @@ Formally, the Q-learning algorithm is defined as:
 
 
 ## The DQN Algorithm
-The DQN (Deep Q Network), algorithm (Mnih et al, 2015) was successful in using a neural network as a nonlinear function approximator to represent the action-value function to master the domain of Atari 2600 video games.
+The DQN (Deep Q Network), algorithm (Mnih et al., 2015) was successful in using a neural network as a nonlinear function approximator to represent the action-value function to master the domain of Atari 2600 video games.
 
 As well as using a neural network, the DQN algorithm introduces two ideas that address the tendency of nonlinear function approximators to become unstable or diverge:
 
@@ -191,16 +193,16 @@ output layer = 4 (number of actions)
 
 ```
 BUFFER_SIZE = int(1e5)  # replay buffer size
-BATCH_SIZE = 32         # minibatch size
+BATCH_SIZE = 64         # minibatch size
 GAMMA = 0.99            # discount factor
-TAU = 0.00125           # for soft update of target parameters
-LR = 3e-3               # learning rate 
+TAU = 1e-3              # for soft update of target parameters
+LR = 1e-4               # learning rate 
 UPDATE_EVERY = 4        # how often to update the network
 ```
 
 
 ## The Banana Environment
-The Banana environemnt is a modified version of the ML-Agents [Banana Collector](https://github.com/Unity-Technologies/ml-agents/blob/0.4.0/docs/Learning-Environment-Examples.md#banana-collector) environment.
+The Banana environment is a modified version of the ML-Agents [Banana Collector](https://github.com/Unity-Technologies/ml-agents/blob/0.4.0/docs/Learning-Environment-Examples.md#banana-collector) environment.
 
 The environment has 37 scaler observations that contain the agent's velocity along with ray-based perception of objects around the agent's forward direction.
 
@@ -214,36 +216,51 @@ The environment provides four discrete actions:
  * 3 - Move Right
 
 ## Results
-![plot_of_rewards]
 
-TODO
+I was able to achieve an average score of 13+ over 100 episodes by tuning the learning rate (from 5e-4 to 1e-4). I was able to solve the environment in around 500 episodes. 
 
-* [x] Clearly describe the learning algorithm 
-* [x] chosen hyperparameters
-* [x] describes the model architectures for any neural networks.
-* [ ] plot of rewards per episode - illustrate that the agent is able to receive an average reward (over 100 episodes) of at least +13
-* [ ] reports the number of episodes needed to solve the environment
-* [ ] Ideas for Future Work - concrete future ideas for improving the agent's performance.
+![plot_of_rewards] 
 
-Optional Goals
-* [ ] Include a GIF and/or link to a YouTube video of your trained agent!
-* [ ] Solve the environment in fewer than 1800 episodes!
-* [ ] Write a blog post explaining the project and your implementation!
-* [ ] Implement a double DQN, a dueling DQN, and/or prioritized experience replay!
-* [ ] For an extra challenge after passing this project, try to train an agent from raw pixels! Check out (Optional) Challenge: Learning from Pixels in the classroom for more details.
+Blue = score per episode. 
+Green = average score over past 100 episodes
+
+Here is a GIF of the agent scoring 14 points in an episode:
+
+![banana_good] 
+
+Here is a GIF of the agent getting stuck in a loop:
+
+![banana_stuck] 
 
 
-### The Markov Property
+I tried various strategies to improve the score but was not able to make a significant improvement. The strategies I tried include:
 
-The state is said the have the Markov Property if the state includes all information about all aspects of the past agent–environment interaction that make a difference for the future. For example, in chess, at any timestep the chessboard reveals the full state of the game, where as in Poker, some cards are hidden. Therefore, chess has the Markov Property, whereas, Poker does not.
+1. Grid search over Hyperparameters
+2. Implementing DDQN (Hasselt et al., ‎2015) - I was able to see improvements against the Gym CartPole environment, but it scored less with the Banana environment.
+3. Implementing a simplified version of Prioritized Experience Replay (Schaul et al., ‎2015) - Again, I was able to see improvements against the Gym CartPole environment, but not with the Banana environment.
 
-state has the Markov Property because it represents all the history of that game in terms of influencing future moves.
+## Ideas for Future Work
 
+I see various ways of improving the agents' performance:
 
- (MDP) is defined by:
- a set of states, S
- a set of actions, A
- a set of rewards, R
- one-step dynamics of the environment
- a discount factor of future rewards.
+### Algorithmic Improvements
+
+1. Adding an LSTM - Sometimes, the agent gets stuck into an endless loop whereby it goes left for a few frames, then right for a few frames. An LSTM could help the agent to avoid that state.
+ 
+2. Additional DQN improvements - There continue to be algorithmic improvements to the original DQN algorithm. It would be interesting to try Rainbow (Hasselt et al., ‎2018), which combines many improvements into one algorithm.
+
+### Using Background Knowledge of the Environment
+
+3. Reduce Number of Actions - The trained agent only uses 3 actions (left, right, forward). Training with a reduced number of actions should improve performance.
+
+4. Visual Pre-Processing - As well as training from pixels, the environment seems like a good candidate for pre-processing. For example, rather than 3 RGB layers, we could pick out the yellow in the good bananas for one layer, the blue for bad bananas in another layer, and the gray of the wall for a third layer. This should help improve training time over RGB layers.
+
+## Optional Goals
+
+The Optional Goals I Completed Are:
+
+* Include a GIF and/or link to a YouTube video of your trained agent (see above)
+* Solve the environment in fewer than 1800 episodes! (solved in ~500)
+* Write a blog post explaining the project and your implementation (see: [The Fairly Accessible Guide to the DQN Algorithm](https://medium.com/@Joebooth/the-fairly-accessible-guide-to-the-dqn-algorithm-d497565844b9?sk=90a9811a622c66663777d375b6eb817c)
+* Implement a double DQN, a dueling DQN, and/or prioritized experience replay (see results)
 

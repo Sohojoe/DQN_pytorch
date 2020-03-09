@@ -56,7 +56,6 @@ class Agent():
             expected_Q = action_values[(0,action)]
         self.qnetwork_local.train()
 
-        # ---- Vanilla DQN
         next_state_on_device = torch.from_numpy(next_state).float().unsqueeze(0).to(device)
         self.qnetwork_target.eval()
         with torch.no_grad():
@@ -67,18 +66,16 @@ class Agent():
         target_Q = reward + (GAMMA * max_predicted_Q * (1-done))
         error = expected_Q-target_Q
         error = abs(error.cpu().data.numpy()[0])
-        # # get the loss
-        # loss = F.mse_loss(expected_Q, target_Q)
 
-        # self.memory.add(error, (state, action, reward, next_state, done))
         self.memory.add(state, action, reward, next_state, done)
+
+        # Simplified Prioritized Experience Replay
+        # add additional samples if the error is large
         if error > 1.:
             error = pow(error, 0.6)
         count = int(round(error,0))
         for _ in range(count):
             self.memory.add(state, action, reward, next_state, done)
-        # if error > 1.:
-        #     print('error:', error, 'count', count)
 
     def step(self, state, action, reward, next_state, done):
         # Save experience in replay memory
@@ -124,9 +121,6 @@ class Agent():
         """
         states, actions, rewards, next_states, dones = experiences
 
-        ## TODO: compute and minimize the loss
-        "*** YOUR CODE HERE ***"
-        
         # get the expected Q value using the local model
         expected_Q = self.qnetwork_local(states).gather(1, actions)
 
