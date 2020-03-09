@@ -215,6 +215,8 @@ The environment provides four discrete actions:
  * 2 - Move Left
  * 3 - Move Right
 
+The environment is considered solved when the agent scores an average of 13 or more over 100 episodes.
+
 ## Results
 
 I was able to achieve an average score of 13+ over 100 episodes by tuning the learning rate (from 5e-4 to 1e-4). I was able to solve the environment in around 500 episodes. 
@@ -261,6 +263,6 @@ The Optional Goals I Completed Are:
 
 * Include a GIF and/or link to a YouTube video of your trained agent (see above)
 * Solve the environment in fewer than 1800 episodes! (solved in ~500)
-* Write a blog post explaining the project and your implementation (see: [The Fairly Accessible Guide to the DQN Algorithm](https://medium.com/@Joebooth/the-fairly-accessible-guide-to-the-dqn-algorithm-d497565844b9?sk=90a9811a622c66663777d375b6eb817c)
+* Write a blog post explaining the project and your implementation (see: [The Fairly Accessible Guide to the DQN Algorithm](https://medium.com/@Joebooth/the-fairly-accessible-guide-to-the-dqn-algorithm-d497565844b9?sk=90a9811a622c66663777d375b6eb817c))
 * Implement a double DQN, a dueling DQN, and/or prioritized experience replay (see results)
 
